@@ -28,6 +28,7 @@ pub struct MCPServer {
     tools: Arc<RwLock<std::collections::HashMap<String, Box<dyn Tool>>>>,
 
     /// Store for async tools (MCP 1.0)
+    #[allow(clippy::arc_with_non_send_sync)]
     async_tools: Arc<RwLock<std::collections::HashMap<String, Arc<dyn AsyncTool>>>>,
 
     #[allow(dead_code)]
@@ -40,6 +41,7 @@ pub struct MCPServer {
     event_bus: Arc<dyn EventBus>,
 }
 
+#[allow(clippy::arc_with_non_send_sync)]
 impl MCPServer {
     /// Create a new async MCP server
     pub fn new(
@@ -57,6 +59,7 @@ impl MCPServer {
     }
 
     /// Register a legacy synchronous tool (deprecated)
+    #[allow(dead_code)]
     pub async fn register_tool(&self, tool: Box<dyn Tool>) {
         let name = tool.name().to_string();
         let mut tools = self.tools.write().await;
@@ -64,6 +67,7 @@ impl MCPServer {
     }
 
     /// Register an async tool (MCP 1.0)
+    #[allow(dead_code)]
     pub async fn register_async_tool(&self, name: &str, tool: Arc<dyn AsyncTool>) {
         let mut async_tools = self.async_tools.write().await;
         async_tools.insert(name.to_string(), tool);
@@ -108,7 +112,7 @@ impl MCPServer {
             }),
         };
 
-        Ok(Some(response))
+        Ok(Some(response?))
     }
 
     /// Handle initialize request
@@ -300,6 +304,7 @@ impl MCPServer {
     }
 
     /// Get count of registered tools
+    #[allow(dead_code)]
     pub async fn tool_count(&self) -> usize {
         let legacy = self.tools.read().await;
         let async_tools = self.async_tools.read().await;
@@ -309,8 +314,6 @@ impl MCPServer {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[tokio::test]
     async fn test_initialize_request() {
         // This test would require the full core/traits setup

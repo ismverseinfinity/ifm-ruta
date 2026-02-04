@@ -169,10 +169,11 @@ impl App {
         }
 
         // Add user feedback to conversation history
-        self.add_user_feedback(std::mem::take(&mut self.feedback));
+        let feedback = std::mem::take(&mut self.feedback);
+        self.add_user_feedback(feedback.clone());
 
         // Output feedback to stdout for MCP to capture
-        println!("{}", self.feedback);
+        println!("{}", feedback);
 
         // Close application
         std::process::exit(0);

@@ -5,11 +5,13 @@ use serde_json::Value;
 use tokio::io::{AsyncWrite, AsyncWriteExt};
 
 /// Wrapper for streaming tool responses
+#[allow(dead_code)]
 pub struct StreamingResponse {
     id: Option<Value>,
     stream: Box<dyn Stream<Item = Result<String, String>> + Send + Unpin>,
 }
 
+#[allow(dead_code)]
 impl StreamingResponse {
     pub fn new(
         id: Option<Value>,
@@ -110,10 +112,12 @@ impl StreamingResponse {
 }
 
 /// Builder for streaming responses
+#[allow(dead_code)]
 pub struct StreamingResponseBuilder {
     id: Option<Value>,
 }
 
+#[allow(dead_code)]
 impl StreamingResponseBuilder {
     pub fn new(id: Option<Value>) -> Self {
         Self { id }
@@ -150,9 +154,6 @@ mod tests {
         ];
         let stream = Box::new(stream::iter(chunks));
         let response = StreamingResponseBuilder::new(id).with_stream(stream);
-
-        // Simulate writer (in real scenario would be async writer)
-        let mut buffer: Vec<u8> = Vec::new();
 
         // Test that we can build the response without errors
         assert_eq!(response.id.as_ref().map(|v| v.get(0)), Some(None));

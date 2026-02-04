@@ -1,0 +1,233 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   IFM-RUTA MCP v0.1.0 → v1.0.0 UPGRADE                      ║
+║                          SPLIT PHASE PLAN (English)                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📋 DOCUMENT STRUCTURE
+════════════════════════════════════════════════════════════════════════════════
+
+1. UPGRADE_PLAN_2026.md (Main Overview)
+   ├─ Executive summary
+   ├─ Goals & objectives
+   ├─ 4-phase structure
+   ├─ Success criteria
+   ├─ Resource requirements
+   └─ Risk mitigation
+
+2. PHASE_1.md (Foundation & Protocol - Weeks 1-4)
+   ├─ Task 1.1: MCP Protocol Upgrade
+   │  ├─ Research MCP 1.0 spec
+   │  ├─ Update dependencies (Cargo.toml)
+   │  └─ Refactor protocol types (MCPRequest, MCPResponse, etc.)
+   ├─ Task 1.2: Async Architecture
+   │  ├─ Create AsyncTool trait
+   │  ├─ Create StreamingTool trait
+   │  └─ Refactor MCP server to async
+   └─ Task 1.3: Input Validation Framework
+      ├─ JSON schema support
+      └─ Define tool schemas
+
+3. PHASE_2.md (Core Features - Weeks 5-8)
+   ├─ Task 2.1: Streaming Infrastructure
+   │  ├─ StreamingResponse wrapper
+   │  ├─ Streaming JSON-RPC format
+   │  └─ Convert interactive_feedback to streaming
+   ├─ Task 2.2: Multi-Tool Framework
+   │  ├─ ToolRegistry implementation
+   │  ├─ Dynamic tool loading
+   │  └─ Tool examples & docs
+   └─ Task 2.3: Sampling & Cost Management
+      ├─ SamplingHandler for AI calls
+      └─ Metrics collection
+
+4. PHASE_3.md (Testing & Documentation - Weeks 9-12)
+   ├─ Task 3.1: Integration Testing
+   │  ├─ Unit tests (85%+ coverage)
+   │  ├─ Integration tests (Cursor, SDK)
+   │  └─ Performance benchmarks
+   ├─ Task 3.2: Documentation
+   │  ├─ API reference
+   │  ├─ Migration guide
+   │  └─ Tool development guide
+   └─ Task 3.3: Compatibility Layer (Optional)
+      └─ Legacy v0.1.0 tool wrapper
+
+5. PHASE_4.md (Polish & Release - Weeks 13-16)
+   ├─ Task 4.1: Final Optimization
+   │  ├─ Performance tuning
+   │  ├─ Security audit
+   │  └─ Code quality gates
+   ├─ Task 4.2: Release Preparation
+   │  ├─ Version bump (0.1.0 → 1.0.0)
+   │  ├─ Build artifacts
+   │  └─ GitHub release
+   └─ Task 4.3: Launch
+      ├─ Release announcement
+      └─ Community engagement
+
+════════════════════════════════════════════════════════════════════════════════
+📊 TIMELINE & MILESTONES
+════════════════════════════════════════════════════════════════════════════════
+
+Week 1-4  │ PHASE 1: Foundation & Protocol Update
+          │ Gate: ✅ Compiles, basic tests pass
+          │ Output: Updated Cargo.toml, async traits, validator framework
+          │
+Week 5-8  │ PHASE 2: Core Features
+          │ Gate: ✅ Streaming works, multi-tool registered
+          │ Output: StreamingResponse, ToolRegistry, SamplingHandler
+          │
+Week 9-12 │ PHASE 3: Integration & Testing
+          │ Gate: ✅ 85%+ coverage, all integrations tested
+          │ Output: Test suite, comprehensive docs, optional compat layer
+          │
+Week 13-16│ PHASE 4: Polish & Release
+          │ Gate: ✅ Production-ready, v1.0.0 released
+          │ Output: Optimized binary, release artifacts, announcements
+
+════════════════════════════════════════════════════════════════════════════════
+🎯 SUCCESS CRITERIA
+════════════════════════════════════════════════════════════════════════════════
+
+FUNCTIONAL
+  ✅ MCP 1.0 protocol fully implemented
+  ✅ Streaming responses working end-to-end
+  ✅ Multi-tool framework operational
+  ✅ Tool registration & discovery working
+  ✅ Async execution stable
+
+PERFORMANCE
+  ✅ Startup < 1 second
+  ✅ Memory < 30MB
+  ✅ Streaming latency < 100ms
+  ✅ 100 concurrent requests supported
+
+QUALITY
+  ✅ Test coverage ≥ 85%
+  ✅ Zero clippy warnings
+  ✅ All documentation complete
+  ✅ Security audit passed
+
+COMPATIBILITY
+  ✅ Works with Cursor 2026+
+  ✅ Works with Claude 4
+  ✅ Compatible with Anthropic SDK
+  ✅ Optional backward compatibility
+
+════════════════════════════════════════════════════════════════════════════════
+📦 DEPENDENCY CHANGES
+════════════════════════════════════════════════════════════════════════════════
+
+ADD (New):
+  • async-trait = "0.1"
+  • jsonschema = "0.16"
+  • pin-project = "1.1"
+
+UPDATE:
+  • mcp = "1.0"  (from "0.1.0")
+  • tokio = "1.0" (ensure latest)
+
+REMOVE:
+  • None - fully backward compatible in dependencies
+
+════════════════════════════════════════════════════════════════════════════════
+🚨 KEY RISKS & MITIGATION
+════════════════════════════════════════════════════════════════════════════════
+
+Risk: MCP spec changes again
+  Impact: High | Probability: Low
+  Mitigation: Monitor MCP repo, use feature flags
+
+Risk: Async complexity
+  Impact: High | Probability: Medium
+  Mitigation: Start with sync, gradually async
+
+Risk: Streaming overhead
+  Impact: Medium | Probability: Low
+  Mitigation: Benchmark early, optimize late
+
+Risk: Breaking changes
+  Impact: High | Probability: High
+  Mitigation: Long deprecation period, compat layer
+
+Risk: Token budget limits
+  Impact: Medium | Probability: Medium
+  Mitigation: Implement pagination, chunking
+
+════════════════════════════════════════════════════════════════════════════════
+👥 TEAM REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+TEAM SIZE:
+  • Lead Developer (1): Architect, Protocol, Testing
+  • Backend Dev (1): Features, Integration
+  • DevOps (0.5): CI/CD, Release
+
+SKILLS NEEDED:
+  • Advanced Rust (async, trait systems)
+  • MCP protocol knowledge
+  • Tokio/async runtime experience
+  • JSON-RPC implementations
+  • Integration testing
+
+TOOLS & INFRASTRUCTURE:
+  • GitHub Actions (existing)
+  • Rust 1.70+ (existing)
+  • MCP test harness
+  • Local testing with Claude/Anthropic SDK
+
+════════════════════════════════════════════════════════════════════════════════
+📝 QUICK START: HOW TO USE THIS PLAN
+════════════════════════════════════════════════════════════════════════════════
+
+1. REVIEW & APPROVE
+   → Read UPGRADE_PLAN_2026.md for overview
+   → Review each PHASE_*.md file for details
+   → Discuss with team, get buy-in
+
+2. SETUP DEVELOPMENT
+   → Create branch: git checkout -b feature/mcp-1.0
+   → Setup task board (GitHub Projects)
+   → Assign team members
+
+3. BEGIN PHASE 1
+   → Read PHASE_1.md in detail
+   → Start with research task (3 days)
+   → Update Cargo.toml next (2 days)
+   → Refactor protocol types (5 days)
+
+4. TRACK PROGRESS
+   → Use task checklists in each phase
+   → Run tests regularly: cargo test --all
+   → Monitor milestones weekly
+   → Adjust timeline as needed
+
+5. GATE CHECKS
+   → At end of each phase, verify success gate
+   → Run full test suite before proceeding
+   → Conduct code review
+
+════════════════════════════════════════════════════════════════════════════════
+🔗 REFERENCES
+════════════════════════════════════════════════════════════════════════════════
+
+MCP Protocol:
+  https://modelcontextprotocol.io/
+
+Rust Async:
+  https://tokio.rs/tokio/tutorial
+  https://rust-lang.github.io/async-book/
+
+JSON Schema:
+  https://json-schema.org/
+  https://docs.rs/jsonschema/
+
+Testing:
+  https://bheisler.github.io/criterion.rs/book/
+  https://github.com/xd009642/tarpaulin
+
+════════════════════════════════════════════════════════════════════════════════
+Created: 2026-02-04
+Status: Ready for Implementation
+Version: 1.0.0
+════════════════════════════════════════════════════════════════════════════════

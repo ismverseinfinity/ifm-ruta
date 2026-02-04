@@ -44,7 +44,7 @@ impl PathValidator {
             .to_str()
             .ok_or_else(|| "Path contains invalid UTF-8".to_string())?;
 
-        if !Self::is_allowed(&canonical_str) {
+        if !Self::is_allowed(canonical_str) {
             return Err("Path outside allowed directory".to_string());
         }
 

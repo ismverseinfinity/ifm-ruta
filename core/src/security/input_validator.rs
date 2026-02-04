@@ -1,7 +1,7 @@
 /// Input validation utilities for preventing injection attacks
 ///
 /// Validates user input to prevent command injection and other attacks
-
+///
 /// Validates command-line input for potential injection attacks
 pub struct InputValidator;
 

@@ -83,7 +83,10 @@ mod protocol_tests {
     fn test_mcp_result_ok() {
         let result: MCPResult<String> = Ok("success".to_string());
         assert!(result.is_ok());
-        assert_eq!(result.unwrap(), "success");
+        match result {
+            Ok(val) => assert_eq!(val, "success"),
+            Err(_) => panic!("Expected Ok result"),
+        }
     }
 
     #[test]

@@ -39,3 +39,6 @@ jsonschema.workspace = true
 
 # Synchronization - Phase 2
 parking_lot.workspace = true
+
+# URL parsing
+url = "2.4"

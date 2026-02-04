@@ -1,5 +1,7 @@
 //! Sampling handler for MCP 1.0 - AI model sampling support
 
+#![allow(unused_imports, dead_code)]
+
 use crate::mcp::protocol::{SamplingMessage, SamplingRequest, SamplingResponse};
 
 /// Sampling handler for AI model calls

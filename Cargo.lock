@@ -2114,7 +2114,7 @@ dependencies = [
 
 [[package]]
 name = "ifm-ruta-core"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2133,12 +2133,13 @@ dependencies = [
  "toml",
  "tracing",
  "tracing-subscriber",
+ "url",
  "uuid",
 ]
 
 [[package]]
 name = "ifm-ruta-unified"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "async-stream",
