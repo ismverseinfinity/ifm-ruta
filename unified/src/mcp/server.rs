@@ -115,7 +115,6 @@ impl MCPServer {
     async fn handle_initialize(&self, request: MCPRequest) -> Result<MCPResponse, AppError> {
         tracing::info!("Handling initialize request");
 
-
         Ok(MCPResponse {
             jsonrpc: "2.0".to_string(),
             id: request.id,

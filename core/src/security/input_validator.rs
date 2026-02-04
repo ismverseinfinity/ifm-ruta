@@ -7,7 +7,7 @@ pub struct InputValidator;
 
 impl InputValidator {
     /// Validate user input for shell injection prevention
-    /// 
+    ///
     /// # Checks
     /// - No shell metacharacters
     /// - Length limits
@@ -74,10 +74,7 @@ impl InputValidator {
     /// Check for buffer overflow attempts
     pub fn check_buffer_size(size: usize, max: usize) -> Result<(), String> {
         if size > max {
-            return Err(format!(
-                "Buffer size {} exceeds maximum {}",
-                size, max
-            ));
+            return Err(format!("Buffer size {} exceeds maximum {}", size, max));
         }
         Ok(())
     }

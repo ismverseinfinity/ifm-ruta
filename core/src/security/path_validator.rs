@@ -1,7 +1,6 @@
 /// Path validation and security checks
-/// 
+///
 /// Prevents path traversal attacks and validates file system access
-
 use std::path::{Path, PathBuf};
 
 /// Validates and sanitizes file paths to prevent directory traversal attacks
@@ -36,7 +35,8 @@ impl PathValidator {
 
         // 4. Try to canonicalize path
         let path_buf = PathBuf::from(path);
-        let canonical = path_buf.canonicalize()
+        let canonical = path_buf
+            .canonicalize()
             .map_err(|e| format!("Invalid path: {}", e))?;
 
         // 5. Verify within allowed directory
@@ -68,12 +68,12 @@ impl PathValidator {
         let path_obj = Path::new(path);
         for component in path_obj.components() {
             use std::path::Component;
-            
+
             if let Component::Normal(name) = component {
                 let name_str = name
                     .to_str()
                     .ok_or_else(|| "Invalid UTF-8 in path component".to_string())?;
-                
+
                 // Check for suspicious patterns
                 if name_str.starts_with('.') && name_str != "." {
                     return Err("Hidden files not allowed".to_string());

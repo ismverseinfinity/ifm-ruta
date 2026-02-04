@@ -168,8 +168,8 @@ impl Default for ToolRegistry {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::traits::async_tool::ToolResponse;
     use async_trait::async_trait;
-    use crate::traits::async_tool::{ToolResponse};
     use serde_json::Value;
 
     struct MockTool;

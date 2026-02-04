@@ -18,11 +18,7 @@ impl InputValidator {
     }
 
     /// Register a schema for a tool
-    pub fn register_schema(
-        &mut self,
-        tool_name: &str,
-        schema: Value,
-    ) -> Result<(), String> {
+    pub fn register_schema(&mut self, tool_name: &str, schema: Value) -> Result<(), String> {
         match JSONSchema::compile(&schema) {
             Ok(compiled) => {
                 self.schemas.insert(tool_name.to_string(), compiled);
@@ -35,18 +31,13 @@ impl InputValidator {
     /// Validate input against a registered schema
     pub fn validate(&self, tool_name: &str, input: &Value) -> Result<(), String> {
         match self.schemas.get(tool_name) {
-            Some(schema) => {
-                match schema.validate(input) {
-                    Ok(_) => Ok(()),
-                    Err(e) => {
-                        let error_msg = e
-                            .map(|err| err.to_string())
-                            .collect::<Vec<_>>()
-                            .join("; ");
-                        Err(format!("Validation failed: {}", error_msg))
-                    }
+            Some(schema) => match schema.validate(input) {
+                Ok(_) => Ok(()),
+                Err(e) => {
+                    let error_msg = e.map(|err| err.to_string()).collect::<Vec<_>>().join("; ");
+                    Err(format!("Validation failed: {}", error_msg))
                 }
-            }
+            },
             None => Err(format!("No schema registered for tool: {}", tool_name)),
         }
     }
@@ -107,14 +98,18 @@ mod tests {
             "required": ["projectDirectory", "prompt"]
         });
 
-        validator.register_schema("interactive_feedback", schema).unwrap();
+        validator
+            .register_schema("interactive_feedback", schema)
+            .unwrap();
 
         let valid_input = json!({
             "projectDirectory": "/path/to/project",
             "prompt": "Please review"
         });
 
-        assert!(validator.validate("interactive_feedback", &valid_input).is_ok());
+        assert!(validator
+            .validate("interactive_feedback", &valid_input)
+            .is_ok());
     }
 
     #[test]

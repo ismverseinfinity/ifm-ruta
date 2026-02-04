@@ -1,9 +1,9 @@
 //! Tool execution metrics and statistics collection
 
+use parking_lot::Mutex;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Arc;
 use std::time::Duration;
-use parking_lot::Mutex;
 
 /// Tool execution metrics
 #[derive(Clone)]

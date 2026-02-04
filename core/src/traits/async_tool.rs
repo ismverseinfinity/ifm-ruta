@@ -71,7 +71,8 @@ pub trait AsyncTool: Send + Sync {
 }
 
 /// Streaming tool trait for tools that support streaming responses
-pub type ToolStream = Box<dyn futures::stream::Stream<Item = Result<String, String>> + Send + Unpin>;
+pub type ToolStream =
+    Box<dyn futures::stream::Stream<Item = Result<String, String>> + Send + Unpin>;
 
 #[async_trait]
 pub trait StreamingTool: Send + Sync {
