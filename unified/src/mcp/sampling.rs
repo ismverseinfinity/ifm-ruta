@@ -1,6 +1,6 @@
 //! Sampling handler for MCP 1.0 - AI model sampling support
 
-use crate::mcp::protocol::{SamplingRequest, SamplingResponse, SamplingMessage};
+use crate::mcp::protocol::{SamplingMessage, SamplingRequest, SamplingResponse};
 
 /// Sampling handler for AI model calls
 pub struct SamplingHandler {
@@ -54,11 +54,7 @@ impl SamplingHandler {
     }
 
     /// Create a mock response for testing (returns success indication)
-    pub fn create_mock_response(
-        &self,
-        model: &str,
-        content: &str,
-    ) -> SamplingResponse {
+    pub fn create_mock_response(&self, model: &str, content: &str) -> SamplingResponse {
         SamplingResponse {
             model: model.to_string(),
             content: content.to_string(),

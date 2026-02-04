@@ -161,10 +161,8 @@ mod tests {
     #[tokio::test]
     async fn test_streaming_response_error_handling() {
         let id = Some(serde_json::json!(1));
-        let chunks: Vec<Result<String, String>> = vec![
-            Ok("chunk1".to_string()),
-            Err("error occurred".to_string()),
-        ];
+        let chunks: Vec<Result<String, String>> =
+            vec![Ok("chunk1".to_string()), Err("error occurred".to_string())];
         let stream = Box::new(stream::iter(chunks));
         let response = StreamingResponseBuilder::new(id).with_stream(stream);
 

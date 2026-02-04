@@ -2,21 +2,31 @@
 
 #[cfg(test)]
 mod protocol_tests {
-    use ifm_ruta_core::traits::async_tool::{
-        MCPError, MCPResult, ToolMetadata, ToolResponse,
-    };
+    use ifm_ruta_core::traits::async_tool::{MCPError, MCPResult, ToolMetadata, ToolResponse};
     use serde_json::json;
 
     // Test error code generation
     #[test]
     fn test_mcp_error_display_messages() {
         let errors = vec![
-            (MCPError::InvalidParams("test".to_string()), "Invalid parameters: test"),
-            (MCPError::ValidationError("bad".to_string()), "Validation error: bad"),
-            (MCPError::ExecutionError("fail".to_string()), "Execution error: fail"),
+            (
+                MCPError::InvalidParams("test".to_string()),
+                "Invalid parameters: test",
+            ),
+            (
+                MCPError::ValidationError("bad".to_string()),
+                "Validation error: bad",
+            ),
+            (
+                MCPError::ExecutionError("fail".to_string()),
+                "Execution error: fail",
+            ),
             (MCPError::TimeoutError, "Tool execution timed out"),
             (MCPError::NotFound("item".to_string()), "Not found: item"),
-            (MCPError::InternalError("err".to_string()), "Internal error: err"),
+            (
+                MCPError::InternalError("err".to_string()),
+                "Internal error: err",
+            ),
         ];
 
         for (error, expected) in errors {

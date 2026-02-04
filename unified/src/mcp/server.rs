@@ -26,16 +26,16 @@ pub struct MCPServer {
     /// Store for legacy synchronous tools (to be migrated)
     #[allow(clippy::arc_with_non_send_sync)]
     tools: Arc<RwLock<std::collections::HashMap<String, Box<dyn Tool>>>>,
-    
+
     /// Store for async tools (MCP 1.0)
     async_tools: Arc<RwLock<std::collections::HashMap<String, Arc<dyn AsyncTool>>>>,
-    
+
     #[allow(dead_code)]
     settings_manager: Arc<dyn SettingsManager>,
-    
+
     #[allow(dead_code)]
     process_manager: Arc<dyn ProcessManager>,
-    
+
     #[allow(dead_code)]
     event_bus: Arc<dyn EventBus>,
 }
@@ -70,7 +70,10 @@ impl MCPServer {
     }
 
     /// Handle a JSON-RPC 2.0 request (async)
-    pub async fn handle_request(&self, request: MCPRequest) -> Result<Option<MCPResponse>, AppError> {
+    pub async fn handle_request(
+        &self,
+        request: MCPRequest,
+    ) -> Result<Option<MCPResponse>, AppError> {
         // Check if this is a notification (no id field)
         if request.id.is_none() {
             // Handle notifications silently (no response needed per JSON-RPC 2.0 spec)
@@ -111,7 +114,8 @@ impl MCPServer {
     /// Handle initialize request
     async fn handle_initialize(&self, request: MCPRequest) -> Result<MCPResponse, AppError> {
         tracing::info!("Handling initialize request");
-        
+
+
         Ok(MCPResponse {
             jsonrpc: "2.0".to_string(),
             id: request.id,
@@ -138,7 +142,7 @@ impl MCPServer {
     /// Handle tools/list request
     async fn handle_tools_list(&self, request: MCPRequest) -> Result<MCPResponse, AppError> {
         tracing::info!("Listing available tools");
-        
+
         let mut tools_list = Vec::new();
 
         // Include legacy tools
@@ -269,7 +273,7 @@ impl MCPServer {
     /// Handle resources/list request (MCP 1.0)
     async fn handle_resources_list(&self, request: MCPRequest) -> Result<MCPResponse, AppError> {
         tracing::info!("Listing resources");
-        
+
         Ok(MCPResponse {
             jsonrpc: "2.0".to_string(),
             id: request.id,
@@ -283,7 +287,7 @@ impl MCPServer {
     /// Handle sampling request (MCP 1.0)
     async fn handle_sampling(&self, request: MCPRequest) -> Result<MCPResponse, AppError> {
         tracing::warn!("Sampling request received but not implemented");
-        
+
         Ok(MCPResponse {
             jsonrpc: "2.0".to_string(),
             id: request.id,

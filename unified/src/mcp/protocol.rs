@@ -207,7 +207,7 @@ pub struct SamplingRequest {
 /// Message in sampling request
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SamplingMessage {
-    pub role: String,  // "user" or "assistant"
+    pub role: String, // "user" or "assistant"
     pub content: String,
 }
 

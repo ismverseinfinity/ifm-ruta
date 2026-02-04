@@ -653,7 +653,9 @@ async fn run_mcp_server() -> Result<(), AppError> {
     let server = MCPServer::new(settings_manager, process_manager, event_bus);
 
     // Register legacy tool (will be migrated in Phase 2)
-    server.register_tool(Box::new(InteractiveFeedbackTool::new())).await;
+    server
+        .register_tool(Box::new(InteractiveFeedbackTool::new()))
+        .await;
 
     // Run the server with stdin/stdout like Go
     let stdin = io::stdin();

@@ -4,12 +4,10 @@
 mod tool_registry_tests {
     use async_trait::async_trait;
     use ifm_ruta_core::services::ToolRegistry;
-    use ifm_ruta_core::traits::async_tool::{
-        AsyncTool, MCPResult, ToolMetadata, ToolResponse,
-    };
+    use ifm_ruta_core::traits::async_tool::{AsyncTool, MCPResult, ToolMetadata, ToolResponse};
     use serde_json::{json, Value};
-    use std::sync::Arc;
     use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::Arc;
 
     // Test tool for testing
     struct TestTool {
@@ -110,10 +108,7 @@ mod tool_registry_tests {
             call_count,
         });
 
-        registry
-            .register_tool("retrieve_tool", tool)
-            .await
-            .unwrap();
+        registry.register_tool("retrieve_tool", tool).await.unwrap();
         let retrieved = registry.get_tool("retrieve_tool").await;
 
         assert!(retrieved.is_ok());
@@ -161,10 +156,7 @@ mod tool_registry_tests {
             call_count,
         });
 
-        registry
-            .register_tool("metadata_tool", tool)
-            .await
-            .unwrap();
+        registry.register_tool("metadata_tool", tool).await.unwrap();
         let metadata = registry.get_tool_metadata("metadata_tool").await.unwrap();
 
         assert_eq!(metadata.name, "metadata_tool");
@@ -181,10 +173,7 @@ mod tool_registry_tests {
             call_count,
         });
 
-        registry
-            .register_tool("unreg_tool", tool)
-            .await
-            .unwrap();
+        registry.register_tool("unreg_tool", tool).await.unwrap();
         assert!(registry.has_tool("unreg_tool").await);
 
         registry.unregister_tool("unreg_tool").await.unwrap();

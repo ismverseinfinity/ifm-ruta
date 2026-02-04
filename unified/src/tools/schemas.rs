@@ -117,7 +117,10 @@ pub fn sampling_request_schema() -> Value {
 #[allow(dead_code)]
 pub fn all_schemas() -> std::collections::HashMap<String, Value> {
     let mut schemas = std::collections::HashMap::new();
-    schemas.insert("interactive_feedback".to_string(), interactive_feedback_schema());
+    schemas.insert(
+        "interactive_feedback".to_string(),
+        interactive_feedback_schema(),
+    );
     schemas.insert("echo".to_string(), echo_schema());
     schemas.insert("tool_result".to_string(), tool_result_schema());
     schemas.insert("sampling_request".to_string(), sampling_request_schema());
