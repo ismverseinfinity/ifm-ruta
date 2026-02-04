@@ -12,13 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Rust
+      - name: Setup Rust (stable)
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
-      
-      - name: Setup Rust 1.70 for MSRV check
-        uses: dtolnay/rust-toolchain@1.70
       
       - name: Formatting Check
         run: cargo fmt --all -- --check
@@ -32,8 +29,14 @@ jobs:
       - name: Integration Tests
         run: cargo test --workspace --test '*'
       
+      - name: Setup Rust 1.70 for MSRV check
+        uses: dtolnay/rust-toolchain@1.70
+      
       - name: MSRV Check (Rust 1.70+)
         run: cargo +1.70 check --workspace
+      
+      - name: Setup Rust (stable) for remaining checks
+        uses: dtolnay/rust-toolchain@stable
       
       - name: Documentation Build
         run: cargo doc --workspace --no-deps --document-private-items
@@ -50,6 +53,8 @@ jobs:
       
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
       
       - name: Install tarpaulin
         run: cargo install cargo-tarpaulin --locked
@@ -70,6 +75,8 @@ jobs:
       
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
       
       - name: Check Startup Time
         run: |
