@@ -108,7 +108,7 @@ impl MCPServer {
             }),
         };
 
-        response.map(Some)
+        Ok(Some(response))
     }
 
     /// Handle initialize request

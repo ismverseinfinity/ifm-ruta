@@ -153,6 +153,7 @@ impl ConversationStorage {
                     .join(format!("{}.json", session.session_id));
                 if session_file.exists() {
                     let _ = fs::remove_file(&session_file);
+                    // Ignoring removal errors - file may have been deleted
                 }
             }
         }

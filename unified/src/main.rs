@@ -169,7 +169,7 @@ impl App {
         }
 
         // Add user feedback to conversation history
-        self.add_user_feedback(self.feedback.clone());
+        self.add_user_feedback(std::mem::take(&mut self.feedback));
 
         // Output feedback to stdout for MCP to capture
         println!("{}", self.feedback);
@@ -774,11 +774,10 @@ fn main() -> Result<(), AppError> {
     // Check if running as GUI with arguments
     if args.len() > 1 {
         let project_directory = args[1].clone();
-        let summary = if args.len() > 2 {
-            args[2].clone()
-        } else {
-            "No summary provided".to_string()
-        };
+        let summary = args
+            .get(2)
+            .cloned()
+            .unwrap_or_else(|| "No summary provided".to_string());
 
         // Run as GUI application
         run_gui_app(project_directory, summary, None);

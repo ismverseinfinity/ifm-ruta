@@ -194,9 +194,9 @@ mod tests {
         });
 
         // This should still compile but may not validate strictly
+        #[allow(unused_variables)]
         let result = validator.register_schema("invalid", invalid_schema);
         // Schema compilation might succeed even with unknown types
         // depending on jsonschema implementation
-        let _ = result;
     }
 }

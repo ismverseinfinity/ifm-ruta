@@ -304,7 +304,9 @@ impl Tool for InteractiveFeedbackTool {
             });
         }
 
-        let obj = input.as_object().unwrap();
+        let obj = input
+            .as_object()
+            .expect("input was checked to be an object");
 
         // Check projectDirectory
         if !obj.contains_key("projectDirectory") {
