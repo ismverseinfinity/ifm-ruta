@@ -4,7 +4,7 @@
 echo "Testing IFM-Ruta MCP Server..."
 echo "================================"
 
-MCP_SERVER="/home/ismverseinfinity/workspaces/mcp/ifm-ruta/target/release/ifm-ruta"
+MCP_SERVER="$(cd "$(dirname "$0")/.." && pwd)/target/release/ifm-ruta"
 
 # Test 1: Initialize
 echo "1. Testing initialize..."
