@@ -25,6 +25,10 @@ chrono.workspace = true
 # MCP dependencies
 mcp = "0.1.0"
 
+# Async support - Phase 1
+async-trait.workspace = true
+pin-project.workspace = true
+
 # GUI dependencies
 eframe = "0.28"
 egui = "0.28"
@@ -46,3 +50,6 @@ futures.workspace = true
 
 # Serialization
 serde_yaml.workspace = true
+
+# Stream utilities - Phase 2
+async-stream.workspace = true

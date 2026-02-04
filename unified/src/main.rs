@@ -637,8 +637,9 @@ impl eframe::App for App {
     }
 }
 
-/// Run the MCP server
-fn run_mcp_server() -> Result<(), AppError> {
+/// Run the MCP server (async version for Phase 1)
+#[tokio::main]
+async fn run_mcp_server() -> Result<(), AppError> {
     // Initialize logging
     init_logging(tracing::Level::INFO)?;
 
@@ -648,11 +649,11 @@ fn run_mcp_server() -> Result<(), AppError> {
     #[allow(clippy::arc_with_non_send_sync)]
     let event_bus = std::sync::Arc::new(EventBusImpl::new());
 
-    // Create MCP server
-    let mut server = MCPServer::new(settings_manager, process_manager, event_bus);
+    // Create async MCP server (Phase 1)
+    let server = MCPServer::new(settings_manager, process_manager, event_bus);
 
-    // Register tools
-    server.register_tool(Box::new(InteractiveFeedbackTool::new()));
+    // Register legacy tool (will be migrated in Phase 2)
+    server.register_tool(Box::new(InteractiveFeedbackTool::new())).await;
 
     // Run the server with stdin/stdout like Go
     let stdin = io::stdin();
@@ -668,8 +669,8 @@ fn run_mcp_server() -> Result<(), AppError> {
         // Parse JSON request like Go
         let request: MCPRequest = serde_json::from_str(line)?;
 
-        // Handle request and send response like Go
-        if let Some(response) = server.handle_request(request)? {
+        // Handle request and send response (async version - Phase 1)
+        if let Some(response) = server.handle_request(request).await? {
             println!("{}", serde_json::to_string(&response)?);
         }
         // Notifications don't get responses (per JSON-RPC 2.0 spec)
