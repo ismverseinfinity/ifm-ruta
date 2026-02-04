@@ -4,12 +4,14 @@
 //! that form the foundation of the Interactive Feedback MCP system.
 
 pub mod models;
+pub mod security;
 pub mod services;
 pub mod traits;
 pub mod utils;
 
 // Re-export specific types to avoid conflicts
 pub use models::{AppError, AppSettings, Feedback, ProjectSettings};
+pub use security::{InputValidator, PathValidator};
 pub use services::{ConversationStorage, EventBusImpl, ProcessManagerImpl, SettingsManagerImpl};
 pub use traits::{Command, EventBus, ProcessManager, SettingsManager, Tool};
 pub use utils::{error_handling, init_logging};

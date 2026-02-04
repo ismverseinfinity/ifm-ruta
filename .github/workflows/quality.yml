@@ -1,0 +1,86 @@
+name: Quality Gates
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      
+      - name: Setup Rust 1.70 for MSRV check
+        uses: dtolnay/rust-toolchain@1.70
+      
+      - name: Formatting Check
+        run: cargo fmt --all -- --check
+      
+      - name: Clippy Linting
+        run: cargo clippy --all --all-targets --all-features -- -D warnings
+      
+      - name: Unit Tests
+        run: cargo test --workspace --lib
+      
+      - name: Integration Tests
+        run: cargo test --workspace --test '*'
+      
+      - name: MSRV Check (Rust 1.70+)
+        run: cargo +1.70 check --workspace
+      
+      - name: Documentation Build
+        run: cargo doc --workspace --no-deps --document-private-items
+      
+      - name: Security Audit
+        run: |
+          cargo install cargo-audit --locked
+          cargo audit
+
+  code-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      
+      - name: Install tarpaulin
+        run: cargo install cargo-tarpaulin --locked
+      
+      - name: Generate Coverage
+        run: cargo tarpaulin --workspace --out Xml --output-dir coverage --timeout 300
+      
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/cobertura.xml
+          fail_ci_if_error: false
+
+  performance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      
+      - name: Check Startup Time
+        run: |
+          cargo build --release
+          time ./target/release/ifm-ruta --version
+      
+      - name: Verify Binary Size
+        run: |
+          ls -lh target/release/ifm-ruta
+          SIZE=$(stat -f%z target/release/ifm-ruta 2>/dev/null || stat -c%s target/release/ifm-ruta)
+          if [ $SIZE -gt 52428800 ]; then
+            echo "Binary size exceeds 50MB: $SIZE bytes"
+            exit 1
+          fi
